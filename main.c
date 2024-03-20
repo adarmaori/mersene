@@ -5,25 +5,24 @@
 
 int isPrime(int n, int *primes, int length) {
   // This function only works if <primes> is either an empty list or the complete list of primes smaller than n
-  if (n == 2) {
+  if ((n & 1) == 0) {
     return 0;
   }
-  if (n % 2 == 0) {
-    return 0;
-  }
-  int t = 1;
   if (length) {
+    int prime;
     for (int i=0; i < length; i++) {
-      if (n % primes[i] == 0) {
+      prime = primes[i];
+      if (n % prime == 0) {
         return 0;
       }
-      if (n < primes[i]*primes[i]) {
+      if (n < prime*prime) {
         return 1;
       }
     }
   }
   else {
-    for (int i=3; i < sqrt(n) + 1; i+=2) {
+    double sqr = sqrt(n);
+    for (int i=3; i <= sqr + 1; i+=2) {
       if (n % i == 0) {
         return 0;
       }
@@ -46,6 +45,7 @@ float timeTest(int len) {
       index++;
     }
   }
+  free(primes);
   end = clock();
   return (float) (end - start) / CLOCKS_PER_SEC;
 }
